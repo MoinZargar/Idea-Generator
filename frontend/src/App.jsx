@@ -1,13 +1,9 @@
-import { useState } from 'react'
+import ChatInterface from "./components/ChatInterface";
 
-
-function App() {
-
+export default function App() {
   return (
-    <>
-      <div>Hello moin </div>
-    </>
-  )
+      <div className='w-full block h-screen'>
+         <ChatInterface />
+      </div>
+  );
 }
-
-export default App

@@ -14,7 +14,7 @@ const genAi = async (prompt) => {
         return result.response.text()
 
     } catch (error) {
-        throw new apiError(500,"Something went wrong while generating response")
+        throw new apiError(error.status,error.errorDetails[1]?.message,error.errorDetails)
     }
 }
 
