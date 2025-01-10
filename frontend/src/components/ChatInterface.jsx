@@ -5,12 +5,13 @@ import Button from './Button';
 import ConversationCard from './ConversationCard';
 import { useForm, Controller, set } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { promptSchema } from '../../../backend/src/utils/promptSchema';
+import  { PromptSchema }  from '../schemas/PropmtSchema';
 import ChatService from '../services/chatService';
 
 const ChatInterface = () => {
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false); 
+    const [error, setError] = useState(null);
 
     const {
         control,
@@ -18,7 +19,7 @@ const ChatInterface = () => {
         formState: { errors},
         reset
     } = useForm({
-        resolver: zodResolver(promptSchema),
+        resolver: zodResolver(PromptSchema),
         defaultValues: {
             prompt: '',
         }
@@ -26,8 +27,8 @@ const ChatInterface = () => {
 
     const onSubmit = async(data) => {
         setIsLoading(true); 
+        setError(null);
         try {
-            console.log(data);
             setMessages(prevMessages => [...prevMessages, { text: data.prompt, isUser: true,}]);
             const response = await ChatService.getResponse(data);   
             setMessages(prevMessages => [...prevMessages, { text: response.data, isUser: false }]);
@@ -35,6 +36,8 @@ const ChatInterface = () => {
             reset(); 
         } catch (error) {
             console.log(error);
+            setError(error.response?.data?.message || 'An error occurred. Please try again later.');
+            reset(); 
             setIsLoading(false); 
         }
     }
@@ -46,6 +49,7 @@ const ChatInterface = () => {
                 <div className="flex-grow overflow-y-auto px-6 mx-4">
                     <ConversationCard messages={messages} />
                     {isLoading && <div className="flex justify-center items-center"><Loader /></div>} 
+                    {error && <div className="text-red-500 text-base mb-2">Error : {error}</div>}
                 </div>
 
               

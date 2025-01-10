@@ -7,7 +7,7 @@ class chatService {
         
         return response.data;
       } catch (error) {
-        return error;
+        throw error;
       }
     }
    

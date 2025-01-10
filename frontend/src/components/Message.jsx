@@ -15,4 +15,5 @@ const Message = ({text, isUser }) => {
     </div>
   );
 };
+
 export default Message;

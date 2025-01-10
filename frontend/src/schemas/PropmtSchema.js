@@ -1,5 +1,7 @@
 import { z } from "zod";
 
-export default  promptSchema = z.object({
+const  PromptSchema = z.object({
     prompt: z.string().min(3).max(150)
 });
+
+export { PromptSchema };
